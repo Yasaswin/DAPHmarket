@@ -1,12 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  Image,
-  FlatList,
-  ScrollView,
-  StyleSheet,
-} from 'react-native';
+import React from 'react';
+import { View, Text, Image, FlatList, ScrollView, StyleSheet } from 'react-native';
 
 interface Product {
   id: number;
@@ -15,16 +8,32 @@ interface Product {
   price: number;
 }
 
+const products: Product[] = [
+  {
+    id: 1,
+    title: 'Product 1',
+    image: 'https://via.placeholder.com/150',
+    price: 10.99,
+  },
+  {
+    id: 2,
+    title: 'Product 2',
+    image: 'https://via.placeholder.com/150',
+    price: 19.99,
+  },
+  // add more products here
+];
+
 interface ProductItemProps {
   title: string;
   image: string;
   price: number;
 }
 
-const ProductItem = ({title, image, price}: ProductItemProps) => {
+const ProductItem = ({ title, image, price }: ProductItemProps) => {
   return (
     <View style={styles.productItemContainer}>
-      <Image source={{uri: image}} style={styles.productItemImage} />
+      <Image source={{ uri: image }} style={styles.productItemImage} />
       <View style={styles.productItemInfo}>
         <Text style={styles.productItemTitle}>{title}</Text>
         <Text style={styles.productItemPrice}>${price.toFixed(2)}</Text>
@@ -34,36 +43,15 @@ const ProductItem = ({title, image, price}: ProductItemProps) => {
 };
 
 const MarketplaceScreen = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-
-  useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/photos?_limit=10')
-      .then(response => response.json())
-      .then(data =>
-        setProducts(
-          data.map((item: any) => ({
-            id: item.id,
-            title: item.title,
-            image: item.url,
-            price: Math.floor(Math.random() * 100) + 1,
-          })),
-        ),
-      );
-  }, []);
-
   return (
     <ScrollView style={styles.container}>
       <View style={styles.productListContainer}>
         <FlatList
           data={products}
-          renderItem={({item}) => (
-            <ProductItem
-              title={item.title}
-              image={item.image}
-              price={item.price}
-            />
+          renderItem={({ item }) => (
+            <ProductItem title={item.title} image={item.image} price={item.price} />
           )}
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={styles.productList}
         />
       </View>
