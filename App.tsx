@@ -1,12 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  Image,
-  FlatList,
-  ScrollView,
-  StyleSheet,
-} from 'react-native';
+import {View, Text, Image, FlatList, StyleSheet} from 'react-native';
 
 interface Product {
   id: number;
@@ -52,22 +45,21 @@ const MarketplaceScreen = () => {
   }, []);
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.productListContainer}>
-        <FlatList
-          data={products}
-          renderItem={({item}) => (
-            <ProductItem
-              title={item.title}
-              image={item.image}
-              price={item.price}
-            />
-          )}
-          keyExtractor={item => item.id.toString()}
-          contentContainerStyle={styles.productList}
-        />
-      </View>
-    </ScrollView>
+    <View style={styles.container}>
+      <FlatList
+        data={products}
+        renderItem={({item}) => (
+          <ProductItem
+            title={item.title}
+            image={item.image}
+            price={item.price}
+          />
+        )}
+        keyExtractor={item => item.id.toString()}
+        contentContainerStyle={styles.productListContainer}
+        style={styles.productList}
+      />
+    </View>
   );
 };
 
@@ -92,6 +84,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   productList: {
+    flex: 1,
     paddingBottom: 20,
   },
   productItemContainer: {
