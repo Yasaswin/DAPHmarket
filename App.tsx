@@ -1,5 +1,15 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Image, FlatList, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 interface Product {
   id: number;
@@ -15,16 +25,30 @@ interface ProductItemProps {
 }
 
 const ProductItem = ({title, image, price}: ProductItemProps) => {
+  const navigation = useNavigation();
+
   return (
-    <View style={styles.productItemContainer}>
-      <Image source={{uri: image}} style={styles.productItemImage} />
-      <View style={styles.productItemInfo}>
-        <Text style={styles.productItemTitle}>{title}</Text>
-        <Text style={styles.productItemPrice}>${price.toFixed(2)}</Text>
+    <TouchableOpacity onPress={() => navigation.navigate('ProductDetails')}>
+      <View style={styles.productItemContainer}>
+        <Image source={{uri: image}} style={styles.productItemImage} />
+        <View style={styles.productItemInfo}>
+          <Text style={styles.productItemTitle}>{title}</Text>
+          <Text style={styles.productItemPrice}>${price.toFixed(2)}</Text>
+        </View>
       </View>
+    </TouchableOpacity>
+  );
+};
+
+const ProductDetailsScreen = () => {
+  return (
+    <View style={styles.container}>
+      <Text>Product Details Screen</Text>
     </View>
   );
 };
+
+const Stack = createNativeStackNavigator();
 
 const MarketplaceScreen = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -60,6 +84,17 @@ const MarketplaceScreen = () => {
         style={styles.productList}
       />
     </View>
+  );
+};
+
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Marketplace" component={MarketplaceScreen} />
+        <Stack.Screen name="ProductDetails" component={ProductDetailsScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
@@ -126,4 +161,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MarketplaceScreen;
+export default App;
